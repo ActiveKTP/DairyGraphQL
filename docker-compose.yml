@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  dairygraphql:
+    build: .
+    environment:
+      DBServer: "192.168.1.6"
+      DBPort: "1433"
+      DBUser: "dairy_user"
+      DBPassword: "!234"
+      Database: "Dairy_webRep250820"
+    ports:
+      - "9001:80"

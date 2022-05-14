@@ -8,7 +8,14 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
-var connectionString = builder.Configuration.GetConnectionString("CommandConStr");
+//var connectionString = builder.Configuration.GetConnectionString("CommandConStr");
+//"CommandConStr": "Server=ACTIVEX\\SQLEXPRESS;Initial Catalog=Dairy_webRep250820;User ID=dairy_user;Password=!234"
+var server = builder.Configuration["DBServer"] ?? "localhost";
+var port = builder.Configuration["DBPort"] ?? "1433";
+var user = builder.Configuration["DBUser"] ?? "dairy_user";
+var password = builder.Configuration["DBPassword"] ?? "!234";
+var database = builder.Configuration["Database"] ?? "Dairy_webRep250820";
+var connectionString = $"Server={server},{port};Initial Catalog={database};User ID={user};Password={password}";
 
 builder.Services.AddPooledDbContextFactory<AppDbContext>(opt => opt.UseSqlServer(connectionString));
 //builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionString));
