@@ -3,7 +3,7 @@ services:
   dairygraphql:
     build: .
     environment:
-      DBServer: "192.168.1.6"
+      DBServer: "192.168.1.8"
       DBPort: "1433"
       DBUser: "dairy_user"
       DBPassword: "!234"

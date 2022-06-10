@@ -6,7 +6,8 @@ namespace DairyGraphQL.GraphQL.Queries
     public partial class Query
     {
         [UseDbContext(typeof(AppDbContext))]
-        [UseProjection]
+        [UsePaging(IncludeTotalCount = true, DefaultPageSize = 10)]
+        //[UseProjection]
         [UseFiltering]
         [UseSorting]
         public IQueryable<Farm?>? GetFarm([ScopedService] AppDbContext context)
