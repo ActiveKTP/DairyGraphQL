@@ -4,7 +4,9 @@ using DairyGraphQL.GraphQL.Queries;
 using DairyGraphQL.GraphQL.Types.Cows;
 using DairyGraphQL.GraphQL.Types.Farms;
 using Graph.ArgumentValidator;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +22,12 @@ var connectionString = $"Server={server}, {port};Initial Catalog={database};User
 builder.Services.AddPooledDbContextFactory<AppDbContext>(opt => opt.UseSqlServer(connectionString));
 //builder.Services.AddDbContext<AppDbContext>(opt => opt.UseSqlServer(connectionString));
 
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+        .AddMicrosoftIdentityWebApi(builder.Configuration);
+
 builder.Services
         .AddGraphQLServer()
+        .AddAuthorization()
         .AddArgumentValidator()
         .AddQueryType<Query>()
         .AddMutationType<Mutation>()
@@ -34,6 +40,9 @@ builder.Services
 var app = builder.Build();
 
 // app.MapGet("/", () => "Hello World!");
+
+app.UseAuthentication();
+app.UseAuthorization();
 
 app.MapGraphQL();
 // app.MapGraphQL("/gql/dairy/regis");
